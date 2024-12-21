@@ -119,18 +119,17 @@ const TravelAgencyProfile = () => {
       await axios.patch(
         `http://localhost:3000/api/v1/users/updateMe`,
         {
-
-          profilephoto:profilePhotoUrl,
-          profilename:updateData.profilename,
-          previousPassword:updateData.previousPassword,
-          newPassword:updateData.newPassword,
-          useremail:updateData.useremail,
-          address:updateData.address,
-          location:updateData.location,
-          phoneNumber:updateData.phoneNumber,
-          country:updateData.country,
-          rate:updateData.rate,
-          email:updateData.email,
+          profilephoto: profilePhotoUrl,
+          profilename: updateData.profilename,
+          previousPassword: updateData.previousPassword,
+          newPassword: updateData.newPassword,
+          useremail: updateData.useremail,
+          address: updateData.address,
+          location: updateData.location,
+          phoneNumber: updateData.phoneNumber,
+          country: updateData.country,
+          rate: updateData.rate,
+          email: updateData.email,
         },
         {
           headers: {
@@ -333,14 +332,12 @@ const TravelAgencyProfile = () => {
           </p>
 
           <p>
-
             <strong>
               <FaStar className="rate-icon" />
               Rate:
             </strong>
 
             {rate}
-
           </p>
 
           <p>

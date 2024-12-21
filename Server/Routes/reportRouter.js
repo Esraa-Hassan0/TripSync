@@ -5,14 +5,6 @@ const AuthConroller = require("../Controllers/AuthorizationController");
 const UserConroller = require("../Controllers/UserConroller");
 const ReportController = require("../Controllers/ReportController");
 
-//dashboard
-reportRouter
-.route("/getallreportsofAgency/:user_id")
-.get(
-  AuthConroller.protect,
-  AuthConroller.restrictTo("admin"),
-  ReportController.getNumberOfReportsForAgency
-);
 reportRouter
   .route("/getAllReports")
   .get(
@@ -47,5 +39,13 @@ reportRouter
     ReportController.deleteReportForAdmin
 );  
 
+//dashboard
+reportRouter
+.route("/getallreportsofAgency")
+.get(
+  AuthConroller.protect,
+  AuthConroller.restrictTo("admin"),
+  ReportController.getNumberOfReportsForAgency
+);
 
 module.exports = reportRouter;
