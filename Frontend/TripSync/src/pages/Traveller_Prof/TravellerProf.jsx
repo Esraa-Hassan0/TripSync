@@ -24,6 +24,18 @@ function TravellerProf(props) {
   const [traveller_own_rewards, set_traveller_own_rewards] = useState([]);
   const [isOwner, setIsOwner] = useState(false);
 
+    const [showPopup, setShowPopup] = useState(false);
+    const [fail, setFail] = useState(false);
+    const [success, setsuccess] = useState(false);
+    const [popMessageContent, setPopMessageContent] = useState("");
+    const togglePoppUp = (content, status) => {
+      setShowPopup(!showPopup);
+      setsuccess(status === "success" ? true : false);
+      setFail(status === "success" ? false : true);
+      setPopMessageContent(content);
+    };
+
+
   let { profile_id } = useParams();
   console.log(profile_id);
   const { user} = useContext(UserContext);

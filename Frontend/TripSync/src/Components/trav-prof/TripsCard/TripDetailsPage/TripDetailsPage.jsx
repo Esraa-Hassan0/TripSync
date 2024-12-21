@@ -19,6 +19,17 @@ const TripDetailsPage = () => {
   const [availbleSeats, setAvailbleSeats] = useState(0);
   const { user } = useContext(UserContext);
 
+      const [showPopup, setShowPopup] = useState(false);
+      const [fail, setFail] = useState(false);
+      const [success, setsuccess] = useState(false);
+      const [popMessageContent, setPopMessageContent] = useState("");
+      const togglePoppUp = (content, status) => {
+        setShowPopup(!showPopup);
+        setsuccess(status === "success" ? true : false);
+        setFail(status === "success" ? false : true);
+        setPopMessageContent(content);
+      };
+
 
   const navigate = useNavigate();
   const { trip_id } = useParams();
