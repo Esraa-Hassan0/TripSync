@@ -1,5 +1,5 @@
 import React from "react";
-import "./AllTribsPublic.css";
+import "./AllTRibsPublic.css";
 import PublicTrips from "./PublicTrips";
 import { useState, useEffect } from "react";
 import NavbarSignedIn from "../NavbarSignedIn/NavbarSignedIn";
@@ -8,13 +8,12 @@ import axios from "axios";
 function AllTribsListPublic() {
   const [trips, setTrips] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchTrips = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/trips/getAllTripsForAdmin",
+          "https://backendtripsync.vercel.app/api/v1/trips/getAllTripsForAdmin",
           {
             headers: {
               Authorization: `Bearer ${token}`,

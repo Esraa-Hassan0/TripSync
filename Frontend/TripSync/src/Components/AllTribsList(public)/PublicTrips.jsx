@@ -1,5 +1,5 @@
 import React from "react";
-import "./AllTribsPublic.css";
+import "./AllTRibsPublic.css";
 import { FaMapMarkerAlt, FaClock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 

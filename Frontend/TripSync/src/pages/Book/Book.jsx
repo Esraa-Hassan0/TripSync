@@ -2,7 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import "./Book.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapMarkerAlt, faCalendar, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMapMarkerAlt,
+  faCalendar,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { useParams, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import axios from "axios";
@@ -30,7 +34,7 @@ const Book = ({ tour, onEnsureBooking }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/trips/getAvailbleSeats/${tour.trip_id}`,
+        `https://backendtripsync.vercel.app/api/v1/trips/getAvailbleSeats/${tour.trip_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,11 +50,12 @@ const Book = ({ tour, onEnsureBooking }) => {
   const RedeemReward = async (id) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:3000/api/v1/rewards/deleteFromMyRewards/${id}`, 
+      await axios.delete(
+        `https://backendtripsync.vercel.app/api/v1/rewards/deleteFromMyRewards/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         }
       );
     } catch (error) {
@@ -65,26 +70,30 @@ const Book = ({ tour, onEnsureBooking }) => {
         setError(`Please select between 1 and ${availbleSeats} seats.`);
         return;
       }
-      if ((selectedFreeTrip && selectedFreeTrip.reward_id) && (selectedPromotion && selectedPromotion.reward_id)) {
+      if (
+        selectedFreeTrip &&
+        selectedFreeTrip.reward_id &&
+        selectedPromotion &&
+        selectedPromotion.reward_id
+      ) {
         alert("You can only select one reward at a time.");
         return;
       }
 
-      let actualPrice=(!tour.sale)?tour.price:tour.saleprice;
-      if(selectedFreeTrip.reward_id)
-      {
-        actualPrice=0;
-      }
-      else if(selectedPromotion.reward_id)
-      {
-        actualPrice=actualPrice-actualPrice*selectedPromotion.promotionpercentage/100;
+      let actualPrice = !tour.sale ? tour.price : tour.saleprice;
+      if (selectedFreeTrip.reward_id) {
+        actualPrice = 0;
+      } else if (selectedPromotion.reward_id) {
+        actualPrice =
+          actualPrice -
+          (actualPrice * selectedPromotion.promotionpercentage) / 100;
       }
       const token = localStorage.getItem("token");
- 
+
       const response = await axios.post(
-        `http://localhost:3000/api/v1/users/payForTrip/${tour.trip_id}`,
+        `https://backendtripsync.vercel.app/api/v1/users/payForTrip/${tour.trip_id}`,
         {
-          Price: actualPrice*seats,
+          Price: actualPrice * seats,
           NumberOfSeats: seats,
         },
         {
@@ -113,7 +122,7 @@ const Book = ({ tour, onEnsureBooking }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/rewards/myRewards`,
+        `https://backendtripsync.vercel.app/api/v1/rewards/myRewards`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -122,9 +131,13 @@ const Book = ({ tour, onEnsureBooking }) => {
       );
 
       if (response.data.length !== 0) {
-        const promotions = response.data.filter((reward) => reward.type === "promotion");
+        const promotions = response.data.filter(
+          (reward) => reward.type === "promotion"
+        );
         setMyPromotions(promotions);
-        const freeTrips = response.data.filter((reward) => reward.type === "free trip");
+        const freeTrips = response.data.filter(
+          (reward) => reward.type === "free trip"
+        );
         setMyFreeTrips(freeTrips);
       }
       setMyRewards(response.data);
@@ -169,38 +182,34 @@ const Book = ({ tour, onEnsureBooking }) => {
         <h2>{tour.description}</h2>
         <div className="book-page-info">
           <p>
-            <FontAwesomeIcon icon={faMapMarkerAlt} /> From: {tour.startlocation} | To: {tour.destinition}
+            <FontAwesomeIcon icon={faMapMarkerAlt} /> From: {tour.startlocation}{" "}
+            | To: {tour.destinition}
           </p>
           <p>
             <FontAwesomeIcon icon={faCalendar} /> Start Date:{" "}
-            
-            { new Date(tour.startdate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                timeZoneName: "short",
-              })}
-     
-           
+            {new Date(tour.startdate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              timeZoneName: "short",
+            })}
           </p>
           <p>
             <FontAwesomeIcon icon={faCalendar} /> End Date:{" "}
-            
-              { new Date(tour.enddate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                timeZoneName: "short",
-              })}
-           
+            {new Date(tour.enddate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              timeZoneName: "short",
+            })}
           </p>
-          
+
           <p>
             <FontAwesomeIcon icon={faUser} /> Available Seats: {availbleSeats}
           </p>
@@ -230,55 +239,54 @@ const Book = ({ tour, onEnsureBooking }) => {
             onChange={(e) => setSeats(Number(e.target.value))}
           />
         </div>
-    
-       {/* Promotions Dropdown */}
-{myPromotions.length > 0 && (
-  <div className="form-group">
-    <label htmlFor="promotions">Choose a Promotion:</label>
-    <select
-      id="promotions"
-      value={selectedPromotion?.reward_id || ""} // Bind to reward_id
-      onChange={(e) => {
-        const selected = myPromotions.find(
-          (promotion) => promotion.reward_id == e.target.value
-        );
-        setSelectedPromotion(selected || {});
-      }}
-    >
-      <option value="">None</option>
-      {myPromotions.map((promo) => (
-        <option key={promo.reward_id} value={promo.reward_id}>
-          {promo.description}
-        </option>
-      ))}
-    </select>
-  </div>
-)}
 
+        {/* Promotions Dropdown */}
+        {myPromotions.length > 0 && (
+          <div className="form-group">
+            <label htmlFor="promotions">Choose a Promotion:</label>
+            <select
+              id="promotions"
+              value={selectedPromotion?.reward_id || ""} // Bind to reward_id
+              onChange={(e) => {
+                const selected = myPromotions.find(
+                  (promotion) => promotion.reward_id == e.target.value
+                );
+                setSelectedPromotion(selected || {});
+              }}
+            >
+              <option value="">None</option>
+              {myPromotions.map((promo) => (
+                <option key={promo.reward_id} value={promo.reward_id}>
+                  {promo.description}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-    {/* Free Trips Dropdown */}
-{myFreeTrips.length > 0 && (
-  <div className="form-group">
-    <label htmlFor="free-trips">Choose a Free Trip:</label>
-    <select
-      id="free-trips"
-      value={selectedFreeTrip?.reward_id || ""} // Bind to reward_id
-      onChange={(e) => {
-        const selected = myFreeTrips.find(
-          (freeTrip) => freeTrip.reward_id == e.target.value
-        );
-        setSelectedFreeTrip(selected || {});
-      }}
-    >
-      <option value="">None</option>
-      {myFreeTrips.map((trip) => (
-        <option key={trip.reward_id} value={trip.reward_id}>
-          {trip.description}
-        </option>
-      ))}
-    </select>
-  </div>
-)}
+        {/* Free Trips Dropdown */}
+        {myFreeTrips.length > 0 && (
+          <div className="form-group">
+            <label htmlFor="free-trips">Choose a Free Trip:</label>
+            <select
+              id="free-trips"
+              value={selectedFreeTrip?.reward_id || ""} // Bind to reward_id
+              onChange={(e) => {
+                const selected = myFreeTrips.find(
+                  (freeTrip) => freeTrip.reward_id == e.target.value
+                );
+                setSelectedFreeTrip(selected || {});
+              }}
+            >
+              <option value="">None</option>
+              {myFreeTrips.map((trip) => (
+                <option key={trip.reward_id} value={trip.reward_id}>
+                  {trip.description}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <button
           className="book-now-button"

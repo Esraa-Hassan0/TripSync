@@ -95,7 +95,7 @@ function AdminView() {
   const getAllTravelAgencies = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/users/getAllTravelAgencies`,
+        `https://backendtripsync.vercel.app/api/v1/users/getAllTravelAgencies`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -104,7 +104,6 @@ function AdminView() {
       );
       // set_dis_all_agencies(true);
       set_all_agencies(res.data);
-
     } catch (err) {
       console.log(err);
     }
@@ -113,7 +112,7 @@ function AdminView() {
   const getAllTrips = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/trips/getAllTripsForAdmin`,
+        `https://backendtripsync.vercel.app/api/v1/trips/getAllTripsForAdmin`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -130,7 +129,7 @@ function AdminView() {
   const getAllRewards = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/rewards/getAllRewards`,
+        `https://backendtripsync.vercel.app/api/v1/rewards/getAllRewards`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -146,7 +145,7 @@ function AdminView() {
   const getAllReports = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/reports/getAllReports`,
+        `https://backendtripsync.vercel.app/api/v1/reports/getAllReports`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -162,7 +161,7 @@ function AdminView() {
   const getAllPolicies = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/policies/getAllPolicies`,
+        `https://backendtripsync.vercel.app/api/v1/policies/getAllPolicies`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -179,14 +178,14 @@ function AdminView() {
   const getAllTravellers = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/users/getAllTravelers`,
+        `https://backendtripsync.vercel.app/api/v1/users/getAllTravelers`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
- 
+
       set_all_Travellers(res.data);
     } catch (err) {
       console.log(err);
@@ -196,14 +195,14 @@ function AdminView() {
   const getAllAdmins = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/users/getAllAdmins`,
+        `https://backendtripsync.vercel.app/api/v1/users/getAllAdmins`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-  
+
       set_all_admins(res.data);
     } catch (err) {
       console.log(err);
@@ -222,10 +221,9 @@ function AdminView() {
   }, []);
 
   const rerender = () => {
-        getAllAdmins();
-        setShowPopup(false);
-  }
-
+    getAllAdmins();
+    setShowPopup(false);
+  };
 
   return (
     <div className="amin-view-container">
@@ -276,11 +274,7 @@ function AdminView() {
 
       {edit_me ? <AdminEditForm /> : null}
 
-      {showGraphs ? (
-        <UserChart/>
-      ) : null}
-
-
+      {showGraphs ? <UserChart /> : null}
 
       {showPopup && (
         <div className="popup-overlay-Reward-container">

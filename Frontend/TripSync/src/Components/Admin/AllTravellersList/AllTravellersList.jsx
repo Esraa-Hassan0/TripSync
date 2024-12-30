@@ -12,7 +12,7 @@ function AllTravellersList({ all_travellers, rerender_admin, rerender }) {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:3000/api/v1/users/mostfiveTravellers`,
+        `https://backendtripsync.vercel.app/api/v1/users/mostfiveTravellers`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

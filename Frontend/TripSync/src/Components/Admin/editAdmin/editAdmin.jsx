@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { Lock, Mail, KeyRound, User, UserCircle } from 'lucide-react';
-import axios from 'axios';
-import './AdminEditForm.css';
+import React, { useState } from "react";
+import { Lock, Mail, KeyRound, User, UserCircle } from "lucide-react";
+import axios from "axios";
+import "./AdminEditForm.css";
 
 const AdminEditForm = () => {
   const [formData, setFormData] = useState({
-    newUsername: '',
-    newEmail: '',
-    currentPassword: '',
-    newPassword: '',
-    confirmNewPassword: ''
+    newUsername: "",
+    newEmail: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
   });
 
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -28,34 +28,36 @@ const AdminEditForm = () => {
     // Username validation
     if (formData.newUsername) {
       if (formData.newUsername.length < 3) {
-        newErrors.newUsername = 'Username must be at least 3 characters';
+        newErrors.newUsername = "Username must be at least 3 characters";
       }
       if (formData.newUsername.length > 20) {
-        newErrors.newUsername = 'Username must be max 20 characters';
+        newErrors.newUsername = "Username must be max 20 characters";
       }
       if (!/^[a-zA-Z0-9_]+$/.test(formData.newUsername)) {
-        newErrors.newUsername = 'Username can only contain letters, numbers, and underscores';
+        newErrors.newUsername =
+          "Username can only contain letters, numbers, and underscores";
       }
     }
 
     // Email validation
     if (formData.newEmail && !/\S+@\S+\.\S+/.test(formData.newEmail)) {
-      newErrors.newEmail = 'Invalid email format';
+      newErrors.newEmail = "Invalid email format";
     }
 
     // Password validation
     if (formData.newPassword) {
       if (formData.newPassword.length < 8) {
-        newErrors.newPassword = 'Password must be at least 8 characters';
+        newErrors.newPassword = "Password must be at least 8 characters";
       }
       if (formData.newPassword !== formData.confirmNewPassword) {
-        newErrors.confirmNewPassword = 'Passwords do not match';
+        newErrors.confirmNewPassword = "Passwords do not match";
       }
     }
 
     // Current password is required for any changes
     if (!formData.currentPassword) {
-      newErrors.currentPassword = 'Current password is required to make changes';
+      newErrors.currentPassword =
+        "Current password is required to make changes";
     }
 
     setErrors(newErrors);
@@ -65,35 +67,34 @@ const AdminEditForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) {
-        return; // Exit the function if validation fails
+      return; // Exit the function if validation fails
     }
 
     // Continue with the API call if validation passes
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     axios
-        .patch(
-            'http://localhost:3000/api/v1/users/updateMe',
-            {
-                username: formData.newUsername,
-                useremail: formData.newEmail,
-                newPassword: formData.newPassword,
-                previousPassword: formData.currentPassword,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        )
-        .then((response) => {
-            alert('Profile updated successfully');
-        })
-        .catch((error) => {
-            console.log(error);
-            alert('Profile update failed');
-        });
-};
-
+      .patch(
+        "https://backendtripsync.vercel.app/api/v1/users/updateMe",
+        {
+          username: formData.newUsername,
+          useremail: formData.newEmail,
+          newPassword: formData.newPassword,
+          previousPassword: formData.currentPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        alert("Profile updated successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Profile update failed");
+      });
+  };
 
   return (
     <div className="admin-edit-form-container">
@@ -109,10 +110,11 @@ const AdminEditForm = () => {
               <h3>
                 <UserCircle className="section-icon" /> Username Update
               </h3>
-              <input className='admin-edit-input'
-                type="text" 
+              <input
+                className="admin-edit-input"
+                type="text"
                 name="newUsername"
-                placeholder="New Username" 
+                placeholder="New Username"
                 value={formData.newUsername}
                 onChange={handleChange}
               />
@@ -127,10 +129,11 @@ const AdminEditForm = () => {
                 <Mail className="section-icon" /> Email Update
               </h3>
 
-              <input className='admin-edit-input'
-                type="email" 
+              <input
+                className="admin-edit-input"
+                type="email"
                 name="newEmail"
-                placeholder="New Email" 
+                placeholder="New Email"
                 value={formData.newEmail}
                 onChange={handleChange}
               />
@@ -144,30 +147,33 @@ const AdminEditForm = () => {
               <h3>
                 <Lock className="section-icon" /> Password Update
               </h3>
-              <input className='admin-edit-input'
-                type="password" 
+              <input
+                className="admin-edit-input"
+                type="password"
                 name="currentPassword"
-                placeholder="Current Password" 
+                placeholder="Current Password"
                 value={formData.currentPassword}
                 onChange={handleChange}
               />
               {errors.currentPassword && (
                 <p className="error-message">{errors.currentPassword}</p>
               )}
-              <input className='admin-edit-input'
-                type="password" 
+              <input
+                className="admin-edit-input"
+                type="password"
                 name="newPassword"
-                placeholder="New Password" 
+                placeholder="New Password"
                 value={formData.newPassword}
                 onChange={handleChange}
               />
               {errors.newPassword && (
                 <p className="error-message">{errors.newPassword}</p>
               )}
-              <input className='admin-edit-input'
-                type="password" 
+              <input
+                className="admin-edit-input"
+                type="password"
                 name="confirmNewPassword"
-                placeholder="Confirm New Password" 
+                placeholder="Confirm New Password"
                 value={formData.confirmNewPassword}
                 onChange={handleChange}
               />
@@ -177,10 +183,7 @@ const AdminEditForm = () => {
             </div>
 
             {/* Submit Button */}
-            <button 
-              type="submit" 
-              className="submit-button"
-            >
+            <button type="submit" className="submit-button">
               <KeyRound className="button-icon" /> Update Profile
             </button>
           </form>

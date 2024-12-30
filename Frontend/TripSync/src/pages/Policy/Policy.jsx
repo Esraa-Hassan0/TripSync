@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import NavbarSignedIn from "../../Components/NavbarSignedIn/NavbarSignedIn";
 import Navbar from "../../Components/Navbar/Navbar";
 import policyPhoto from "../../assets/policy2.jpg";
-import "./policy.css";
+import "./Policy.css";
 import { UserContext } from "../../assets/userContext";
 import PolicyCard from "../../Components/PolicyCard/PolicyCard";
 import axios from "axios";
 
-const Base_Url = "http://localhost:3000/api/v1/policies/getAllPolicies";
+const Base_Url =
+  "https://backendtripsync.vercel.app/api/v1/policies/getAllPolicies";
 
 function Policy() {
   const [policies, setpolicy] = useState([]);

@@ -20,7 +20,7 @@ function Review() {
   const { user } = useContext(UserContext);
   const { user_id } = useParams();
 
-  const Base_URL = `http://localhost:3000/api/v1/users/${user_id}/reviews/reviews`; // Dynamically use the userId in the URL
+  const Base_URL = `https://backendtripsync.vercel.app/api/v1/users/${user_id}/reviews/reviews`; // Dynamically use the userId in the URL
 
   const handleInputChange = (event) => {
     const newRating = Math.min(Math.max(Number(event.target.value), 0), 5);
@@ -76,89 +76,87 @@ function Review() {
     }
   };
 
-
   const reRender = () => {
     fetchReviews();
   };
 
- useEffect(() => {
+  useEffect(() => {
     if (user_id) {
       fetchReviews();
     }
-  }, [user.role, user_id,review]);
+  }, [user.role, user_id, review]);
 
   return (
     <>
       <div className="flexx">
         <SideNavBar userId={user_id}></SideNavBar>
         <div className="review-header">
-        {user.role === "traveller" && (
-          <div className="cardReview">
-            <div className="card-body">
-              <div className="titleReview h4">
-                Let us Know about what you think
+          {user.role === "traveller" && (
+            <div className="cardReview">
+              <div className="card-body">
+                <div className="titleReview h4">
+                  Let us Know about what you think
+                </div>
+                Rate us!
+                <div className="progress">
+                  <StarProgress rating={rating} />
+                </div>
+                <div>
+                  <label className="rateNum">
+                    Set Rating (0-5):
+                    <input
+                      className="stars"
+                      type="number"
+                      value={rating}
+                      onChange={(e) => {
+                        handleInputChange(e);
+                        setRate(e.currentTarget.value);
+                      }}
+                      min="0"
+                      max="5"
+                    />
+                  </label>
+                </div>
+                <div className="ReviewContent">
+                  <textarea
+                    type="text"
+                    placeholder="Your review"
+                    className="input-review"
+                    onChange={(e) => setReview(e.currentTarget.value)}
+                  ></textarea>
+                </div>
+                <button className="sendBtn" onClick={handleSubmit}>
+                  Submit
+                </button>
+                {error && <p className="error-message">{error}</p>}
+                {success && <p className="success-message">{success}</p>}
               </div>
-              Rate us!
-              <div className="progress">
-                <StarProgress rating={rating} />
-              </div>
-              <div>
-                <label className="rateNum">
-                  Set Rating (0-5):
-                  <input
-                    className="stars"
-                    type="number"
-                    value={rating}
-                    onChange={(e) => {
-                      handleInputChange(e);
-                      setRate(e.currentTarget.value);
-                    }}
-                    min="0"
-                    max="5"
-                  />
-                </label>
-              </div>
-              <div className="ReviewContent">
-                <textarea
-                  type="text"
-                  placeholder="Your review"
-                  className="input-review"
-                  onChange={(e) => setReview(e.currentTarget.value)}
-                ></textarea>
-              </div>
-              <button className="sendBtn" onClick={handleSubmit}>
-                Submit
-              </button>
-              {error && <p className="error-message">{error}</p>}
-              {success && <p className="success-message">{success}</p>}
             </div>
-          </div>
-        )}
+          )}
 
-        {(
-          <div className="review-card-b">
-            <h3 className="reviews-header-section">Reviews</h3>
-            <section className="review-cards">
-
-            {reviews.length > 0 ? (
-              reviews.map((review, index) => (
-                <ReviewCard
-                  key={index}
-                  review={review.review}
-                  rate={review.rate}
-                  profilename={review.profilename}
-                  profilephoto={review.profilephoto}
-                  traveller_id={review.traveller_id}
-                  travel_agency_id={review.travel_agency_id}
-                  reRender={reRender}
-                />
-              ))
-            ) : (
-              <p>No reviews yet.</p>
-            )}
-            </section>
-          </div>
-        )}
+          {
+            <div className="review-card-b">
+              <h3 className="reviews-header-section">Reviews</h3>
+              <section className="review-cards">
+                {reviews.length > 0 ? (
+                  reviews.map((review, index) => (
+                    <ReviewCard
+                      key={index}
+                      review={review.review}
+                      rate={review.rate}
+                      profilename={review.profilename}
+                      profilephoto={review.profilephoto}
+                      traveller_id={review.traveller_id}
+                      travel_agency_id={review.travel_agency_id}
+                      reRender={reRender}
+                    />
+                  ))
+                ) : (
+                  <p>No reviews yet.</p>
+                )}
+              </section>
+            </div>
+          }
         </div>
       </div>
     </>

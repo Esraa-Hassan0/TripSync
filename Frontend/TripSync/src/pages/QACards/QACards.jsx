@@ -19,14 +19,14 @@ const QACards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [newQuestion, setNewQuestion] = useState("");  // New question input state
-  const [newAnswer, setNewAnswer] = useState("");      // New answer input state
+  const [newQuestion, setNewQuestion] = useState(""); // New question input state
+  const [newAnswer, setNewAnswer] = useState(""); // New answer input state
 
   useEffect(() => {
     const fetchQAData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/users/myProfile/QA/getAllQAOfAgency/${user_id}`,
+          `https://backendtripsync.vercel.app/api/v1/users/myProfile/QA/getAllQAOfAgency/${user_id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -51,7 +51,7 @@ const QACards = () => {
       setLoading(true);
       // Send DELETE request to the API
       await axios.delete(
-        `http://localhost:3000/api/v1/users/myProfile/QA/deleteQA/${questionId}`,
+        `https://backendtripsync.vercel.app/api/v1/users/myProfile/QA/deleteQA/${questionId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -61,7 +61,6 @@ const QACards = () => {
 
       // Optimistic UI update: Remove the deleted QA from the state immediately
       setQaData(qaData.filter((item) => item.question_id !== questionId));
-  
     } catch (error) {
       console.error("Error deleting QA data:", error);
       setError("Failed to delete QA. Please try again.");
@@ -72,41 +71,42 @@ const QACards = () => {
 
   const handleEdit = (index) => {
     setEditIndex(index);
-    setEditedData({ question: qaData[index].question, answer: qaData[index].answer });
+    setEditedData({
+      question: qaData[index].question,
+      answer: qaData[index].answer,
+    });
   };
 
   const handleSave = async (index) => {
     try {
       setLoading(true);
-  
+
       // Check if the index exists in qaData
       if (!qaData[index]) {
         throw new Error("Invalid index");
       }
-  
+
       // Send PATCH request to update the QA data
       const response = await axios.patch(
-        `http://localhost:3000/api/v1/users/myProfile/QA/updateQA/${qaData[index].question_id}`,
-        editedData, 
+        `https://backendtripsync.vercel.app/api/v1/users/myProfile/QA/updateQA/${qaData[index].question_id}`,
+        editedData,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-  
 
-  
       // Check if response contains valid data
       if (!response.data) {
         throw new Error("Failed to save, invalid response data");
       }
-  
+
       // Fetch the updated QA data after save
       const fetchQAData = async () => {
         try {
           const fetchResponse = await axios.get(
-            "http://localhost:3000/api/v1/users/myProfile/QA/getAllQA",
+            "https://backendtripsync.vercel.app/api/v1/users/myProfile/QA/getAllQA",
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -119,9 +119,9 @@ const QACards = () => {
           setError("Failed to load data. Please try again later.");
         }
       };
-  
+
       fetchQAData(); // Fetch the latest data from the server after saving
-  
+
       // Reset edit state
       setEditIndex(null);
     } catch (error) {
@@ -131,8 +131,6 @@ const QACards = () => {
       setLoading(false);
     }
   };
-  
-  
 
   const handleCancel = () => {
     setEditIndex(null);
@@ -148,7 +146,7 @@ const QACards = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/api/v1/users/myProfile/QA/addQA",
+        "https://backendtripsync.vercel.app/api/v1/users/myProfile/QA/addQA",
         { question: newQuestion, answer: newAnswer },
         {
           headers: {
@@ -156,29 +154,29 @@ const QACards = () => {
           },
         }
       );
-      
+
       // After adding a new QA, fetch the updated QA data
       const fetchQAData = async () => {
         try {
           const fetchResponse = await axios.get(
-            "http://localhost:3000/api/v1/users/myProfile/QA/getAllQA",
+            "https://backendtripsync.vercel.app/api/v1/users/myProfile/QA/getAllQA",
             {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`,
               },
             }
           );
-          setQaData(fetchResponse.data);  // Update the state with the newly fetched data
+          setQaData(fetchResponse.data); // Update the state with the newly fetched data
         } catch (error) {
           console.error("Error fetching QA data:", error);
           setError("Failed to load data. Please try again later.");
         }
       };
       fetchQAData(); // Fetch the latest data from the server
-      
+
       // Clear inputs
-      setNewQuestion(""); 
-      setNewAnswer(""); 
+      setNewQuestion("");
+      setNewAnswer("");
     } catch (error) {
       console.error("Error adding new QA:", error);
       setError("Failed to add new QA. Please try again.");
@@ -227,13 +225,15 @@ const QACards = () => {
         <div className="qa-cards">
           {qaData.map((item, index) => (
             <div className="qa-card" key={item.question_id}>
-              {editIndex === index && user.role === "travel_agency" && Number(user_id) === user.user_id ? (
+              {editIndex === index &&
+              user.role === "travel_agency" &&
+              Number(user_id) === user.user_id ? (
                 <>
                   <div className="qa-card-header">
                     <textarea
                       className="edit-textarea"
                       name="question"
-                      value={editedData.question}  // binding to editedData
+                      value={editedData.question} // binding to editedData
                       onChange={handleChange}
                     />
                   </div>
@@ -241,7 +241,7 @@ const QACards = () => {
                     <textarea
                       className="edit-textarea"
                       name="answer"
-                      value={editedData.answer}  // binding to editedData
+                      value={editedData.answer} // binding to editedData
                       onChange={handleChange}
                     />
                   </div>
@@ -259,36 +259,38 @@ const QACards = () => {
                 </>
               ) : (
                 <>
-                <div className="qa-card-header">
-              <h3 className="qa-card-question">{item.question}</h3>
-            {user.role === "travel_agency" && Number(user_id) === user.user_id && (
-        <button 
-          className="delete-btn"
-         onClick={() => handleDelete(item.question_id)}
-         >
-        X
-       </button>
-       )}
-        </div>
+                  <div className="qa-card-header">
+                    <h3 className="qa-card-question">{item.question}</h3>
+                    {user.role === "travel_agency" &&
+                      Number(user_id) === user.user_id && (
+                        <button
+                          className="delete-btn"
+                          onClick={() => handleDelete(item.question_id)}
+                        >
+                          X
+                        </button>
+                      )}
+                  </div>
 
                   <div className="qa-card-body">
                     <p className="qa-card-answer">{item.answer}</p>
                   </div>
                   <div className="qa-card-footer">
-                      <span>
-                        {new Intl.DateTimeFormat("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }).format(new Date(item.date))}{" "}
-                        |{" "}
-                        {new Intl.DateTimeFormat("en-US", {
-                          hour: "numeric",
-                          minute: "numeric",
-                          hour12: true,
-                        }).format(new Date(item.date))}
-                      </span>
-                      {user.role === "travel_agency" && Number(user_id) === user.user_id && (
+                    <span>
+                      {new Intl.DateTimeFormat("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }).format(new Date(item.date))}{" "}
+                      |{" "}
+                      {new Intl.DateTimeFormat("en-US", {
+                        hour: "numeric",
+                        minute: "numeric",
+                        hour12: true,
+                      }).format(new Date(item.date))}
+                    </span>
+                    {user.role === "travel_agency" &&
+                      Number(user_id) === user.user_id && (
                         <button
                           className="btn edit-btn"
                           onClick={() => handleEdit(index)}
@@ -296,8 +298,7 @@ const QACards = () => {
                           Edit
                         </button>
                       )}
-                    </div>
-
+                  </div>
                 </>
               )}
             </div>

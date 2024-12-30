@@ -16,10 +16,9 @@ const Reward = ({
 
   const token = localStorage.getItem("token");
   const RedeemReward = async () => {
-
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/v1/rewards/RedeemReward/${id}`,
+        `https://backendtripsync.vercel.app/api/v1/rewards/RedeemReward/${id}`,
         {}, // Assuming no request body is needed. If there is, pass it here
         {
           headers: {
@@ -28,7 +27,7 @@ const Reward = ({
         }
       );
 
-      showPopUp("Reward Calimes Successfully","success");
+      showPopUp("Reward Calimes Successfully", "success");
       setTimeout(() => {
         rerender();
       }, 3000);

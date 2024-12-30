@@ -26,7 +26,7 @@ import QACards from "./pages/QACards/QACards";
 import Policy from "./pages/Policy/Policy";
 import TravelAgencyProfile from "./pages/TravelAgencyProfile/TravelAgencyProfile";
 import ReviewCard from "./Components/reviewCard/reviewCard";
-import AddNewTour from "./Pages/AddNewTour/AddNewTour";
+import AddNewTour from "./pages/AddNewTour/AddNewTour";
 import NotFound from "./pages/NotFound/NotFound";
 import image2 from "./assets/card.jpg";
 import image3 from "./assets/Rectangle 9.png";

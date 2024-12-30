@@ -10,7 +10,7 @@ function Report() {
   const queryParams = new URLSearchParams(location.search);
   const userType = queryParams.get("type"); // Retrieve the 'type' value
 
-  const Base_URL = `http://localhost:3000/api/v1/users/${user_id}/reports/addReport`;
+  const Base_URL = `https://backendtripsync.vercel.app/api/v1/users/${user_id}/reports/addReport`;
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -33,7 +33,6 @@ function Report() {
       );
       setSuccess(response.data.message);
       setIsMessageVisible(true); // Show the message on successful submission
-
     } catch (error) {
       setError(error.message);
       setIsMessageVisible(false); // Hide the message if there’s an error

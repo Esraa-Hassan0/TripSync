@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SideNavBar from "../../Components/SideNavBar/SideNavBar";
@@ -7,15 +7,15 @@ import { UserContext } from "../../assets/userContext";
 import { useParams } from "react-router-dom";
 import "./Tours.css";
 
-
 const Tours = () => {
   const [tours, setTours] = useState([]); // State to store tours data
   const [error, setError] = useState(""); // State to handle errors
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const {user_id}= useParams();
-  const Base_Url = "http://localhost:3000/api/v1/users/myProfile/trips/getAllTrips";
+  const { user_id } = useParams();
+  const Base_Url =
+    "https://backendtripsync.vercel.app/api/v1/users/myProfile/trips/getAllTrips";
 
   // Fetch trips by ID
   const fetchTrips = async () => {
@@ -23,11 +23,14 @@ const Tours = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.get(`http://localhost:3000/api/v1/trips/getTripsForAgency/${user_id}`, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `https://backendtripsync.vercel.app/api/v1/trips/getTripsForAgency/${user_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       // setTrips(response.data.data);
       setTours(response.data);
@@ -42,15 +45,19 @@ const Tours = () => {
     fetchTrips();
   }, []);
 
-
   // Handle delete tour
   const handleDeleteTour = async (id) => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:3000/api/v1/users/myProfile/trips/deleteTrip/${id}`,{ headers: { 
-        Authorization: `Bearer ${token}`,
-      },}); // Replace with your API endpoint
+      await axios.delete(
+        `https://backendtripsync.vercel.app/api/v1/users/myProfile/trips/deleteTrip/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      ); // Replace with your API endpoint
       setTours(tours.filter((tour) => tour.trip_id !== id)); // Update state after deletion
     } catch (error) {
       console.error("Error deleting trip:", error);
@@ -60,7 +67,7 @@ const Tours = () => {
 
   return (
     <div className="flex">
-      <SideNavBar  userId={user_id} />
+      <SideNavBar userId={user_id} />
       {error && <div className="error-message">{error}</div>}
       <TourCardContainer
         type={user.role} // Pass the user role

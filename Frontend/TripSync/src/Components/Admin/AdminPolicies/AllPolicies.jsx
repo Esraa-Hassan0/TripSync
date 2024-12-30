@@ -5,18 +5,24 @@ import axios from "axios";
 
 import "./AllPolicies.css";
 
-const AllPolicies = ({ all_policies, is_admin, admin_id,rerender }) => {
+const AllPolicies = ({ all_policies, is_admin, admin_id, rerender }) => {
   const [add_policy_opend, set_add_policy_opend] = useState(false);
-  const handleDeletePolicy = async(policy_id) => {
-    const policy=await axios.delete(`http://localhost:3000/api/v1/policies/deletePolicy/${policy_id}`,{
-      headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      }
-    }).then((res)=>{
-      rerender();
-    }).catch((err)=>{
-      console.log(err);
-    });
+  const handleDeletePolicy = async (policy_id) => {
+    const policy = await axios
+      .delete(
+        `https://backendtripsync.vercel.app/api/v1/policies/deletePolicy/${policy_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        rerender();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // Add delete logic here, e.g., call an API or update the state
   };
 
@@ -43,7 +49,7 @@ const AllPolicies = ({ all_policies, is_admin, admin_id,rerender }) => {
           <AddPolicy
             closeAddPolicyModal={closeAddPolicyModal}
             adminId={admin_id}
-            rerender = {rerender}
+            rerender={rerender}
           />
         </div>
       ) : null}
@@ -55,15 +61,14 @@ const AllPolicies = ({ all_policies, is_admin, admin_id,rerender }) => {
         </div>
       )}
       <div className="policies-list">
-        {all_policies.map((policy,idx) => (
+        {all_policies.map((policy, idx) => (
           <PolicyCard
             key={idx}
             title={policy.title}
             description={policy.description}
             isAdmin={is_admin}
-
             onDelete={() => handleDeletePolicy(policy.policy_id)}
-            rerender = {rerender}
+            rerender={rerender}
           />
         ))}
       </div>

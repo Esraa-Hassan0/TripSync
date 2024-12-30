@@ -10,7 +10,6 @@ const EditTourPage = () => {
   const { user } = useContext(UserContext);
   const location = useLocation();
 
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -21,10 +20,10 @@ const EditTourPage = () => {
     saleprice: "",
     sale: false,
     photos: [],
-    MaxSeats:1,
+    MaxSeats: 1,
     startDate: "",
     endDate: "",
-    TravelAgency_ID:user.user_id,
+    TravelAgency_ID: user.user_id,
 
     // Description: "",
     // Price: "",
@@ -38,22 +37,21 @@ const EditTourPage = () => {
     // saleprice: "",
     // TravelAgency_ID: user.user_id,
   });
-  const {tour} = location.state || {}; // Assuming you pass the tour ID through state
-  const tourId=tour.trip_id;
+  const { tour } = location.state || {}; // Assuming you pass the tour ID through state
+  const tourId = tour.trip_id;
   useEffect(() => {
     const fetchTourData = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `http://localhost:3000/api/v1/trips/getTripByID/${tourId}`,
+          `https://backendtripsync.vercel.app/api/v1/trips/getTripByID/${tourId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-  
+
         const tourData = response.data[0];
 
-  
         // Normalize response keys to match formData structure
         setFormData({
           StartLocation: tourData.startlocation || "",
@@ -75,9 +73,6 @@ const EditTourPage = () => {
 
     if (tourId) fetchTourData();
   }, [tourId, user.user_id]);
-  
-
-
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -118,13 +113,19 @@ const EditTourPage = () => {
       //fetchTourData();
       // formData.MaxSeats=response.data.maxseats;
       // formData.startDate=response.data.startdate;
-      
+
       // Send the updated data to the server using axios
 
       const token = localStorage.getItem("token");
-      const response = await axios.patch(`http://localhost:3000/api/v1/users/myProfile/trips/updateTrip/${tourId}`, formData,{headers: { 
-        Authorization: `Bearer ${token}`,
-      },}); // Update API endpoint
+      const response = await axios.patch(
+        `https://backendtripsync.vercel.app/api/v1/users/myProfile/trips/updateTrip/${tourId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      ); // Update API endpoint
 
       navigate(-1); // Redirect to the tour page after update
     } catch (error) {
@@ -142,7 +143,9 @@ const EditTourPage = () => {
       <form className="edit-tour-form" onSubmit={handleFormSubmit}>
         {/* From and To Fields */}
         <div className="form-group">
-          <label className="form-label" htmlFor="from">From:</label>
+          <label className="form-label" htmlFor="from">
+            From:
+          </label>
           <input
             className="form-input"
             type="text"
@@ -154,7 +157,9 @@ const EditTourPage = () => {
           />
         </div>
         <div className="form-group">
-          <label className="form-label" htmlFor="to">To:</label>
+          <label className="form-label" htmlFor="to">
+            To:
+          </label>
           <input
             className="form-input"
             type="text"
@@ -168,7 +173,9 @@ const EditTourPage = () => {
 
         {/* Description */}
         <div className="form-group">
-          <label className="form-label" htmlFor="description">Description:</label>
+          <label className="form-label" htmlFor="description">
+            Description:
+          </label>
           <textarea
             className="form-input"
             id="description"
@@ -182,7 +189,9 @@ const EditTourPage = () => {
 
         {/* Pricing */}
         <div className="form-group">
-          <label className="form-label" htmlFor="originalPrice">Original Price:</label>
+          <label className="form-label" htmlFor="originalPrice">
+            Original Price:
+          </label>
           <input
             className="form-input"
             type="number"
@@ -196,7 +205,9 @@ const EditTourPage = () => {
         {formData.sale ? (
           <>
             <div className="form-group">
-              <label className="form-label" htmlFor="salePrice">Sale Price:</label>
+              <label className="form-label" htmlFor="salePrice">
+                Sale Price:
+              </label>
               <input
                 className="form-input"
                 type="number"

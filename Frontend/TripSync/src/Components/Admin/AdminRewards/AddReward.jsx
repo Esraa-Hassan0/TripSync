@@ -54,14 +54,16 @@ function AddReward({ closeAddRewardModal, userId, rerender }) {
     try {
       const image = await handlesImage(formData.reward_photo);
       const reward = await axios.post(
-        "http://localhost:3000/api/v1/rewards/addReward",
+        "https://backendtripsync.vercel.app/api/v1/rewards/addReward",
         {
           reward_description: formData.reward_name,
           reward_points: formData.req_points,
           photo: image,
           reward_type: formData.type,
           promotion_percentage:
-            formData.type === "promotion" ? formData.promotion_percentage : null,
+            formData.type === "promotion"
+              ? formData.promotion_percentage
+              : null,
         },
         {
           headers: {

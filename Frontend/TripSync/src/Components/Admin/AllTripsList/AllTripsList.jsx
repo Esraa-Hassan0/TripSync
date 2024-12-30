@@ -20,7 +20,7 @@ function AllTripsList({ all_trips, rerender }) {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:3000/api/v1/trips/mostFiveTrips`,
+        `https://backendtripsync.vercel.app/api/v1/trips/mostFiveTrips`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

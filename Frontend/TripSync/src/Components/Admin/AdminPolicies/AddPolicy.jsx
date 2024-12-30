@@ -1,12 +1,10 @@
 import { useState } from "react";
 import "./AddPolicy.css";
 import axios from "axios";
-function AddPolicy({ closeAddPolicyModal, adminId,rerender }) {
-  
-
+function AddPolicy({ closeAddPolicyModal, adminId, rerender }) {
   const [formData, setFormData] = useState({
     policy_title: "",
-    policy_description: ""
+    policy_description: "",
   });
 
   const handleInputChange = (e) => {
@@ -14,11 +12,11 @@ function AddPolicy({ closeAddPolicyModal, adminId,rerender }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/v1/policies/createPolicy`,
+        `https://backendtripsync.vercel.app/api/v1/policies/createPolicy`,
         {
           policy_title: formData.policy_title,
           description: formData.policy_description,

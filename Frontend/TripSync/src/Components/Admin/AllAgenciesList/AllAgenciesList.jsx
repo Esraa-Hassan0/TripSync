@@ -11,7 +11,7 @@ function AllAgenciesList({ all_agencies, rerender }) {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:3000/api/v1/users/getAverageRating`,
+        `https://backendtripsync.vercel.app/api/v1/users/getAverageRating`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

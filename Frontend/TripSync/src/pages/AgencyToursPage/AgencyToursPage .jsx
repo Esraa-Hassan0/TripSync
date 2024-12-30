@@ -12,7 +12,7 @@ const AgencyToursPage = () => {
   const navigate = useNavigate();
 
   // Access agencyId from location state
-  const agencyId = location.state||{};
+  const agencyId = location.state || {};
 
   // Fetch tours for the selected agency
   useEffect(() => {
@@ -21,9 +21,12 @@ const AgencyToursPage = () => {
         try {
           const token = localStorage.getItem("token");
           const response = await axios.get(
-            `http://localhost:3000/api/v1/trips/getTrips/${agencyId}`,{headers: { 
-              Authorization: `Bearer ${token}`,
-            },}
+            `https://backendtripsync.vercel.app/api/v1/trips/getTrips/${agencyId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
           setTours(response.data); // Assuming the API returns a list of tours
         } catch (error) {
@@ -48,28 +51,27 @@ const AgencyToursPage = () => {
       <div className="tour-cards">
         {tours.length === 0 && <p>No tours available for this agency.</p>}
         {tours.map((tour) => {
-  // JavaScript logic for calculating days
-  const startDate = new Date(tour.startdate);
-  const endDate = new Date(tour.enddate);
-  const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Difference in days
+          // JavaScript logic for calculating days
+          const startDate = new Date(tour.startdate);
+          const endDate = new Date(tour.enddate);
+          const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Difference in days
 
-  return (
-    <TourCard
-      key={tour.trip_id}
-      type="traveller" // We are only dealing with the traveler type here
-      imageSrc={tour.photos[0]}
-      description={tour.description}
-      days={days} // Pass the calculated days
-      originalPrice={tour.price}
-      salePrice={tour.saleprice}
-      destination={tour.destination}
-      startLocation={tour.startlocation}
-      hasSale={tour.sale}
-      onBook={() => handleBookTour(tour.user_id)} // Handle booking for traveler
-    />
-  );
-})}
-
+          return (
+            <TourCard
+              key={tour.trip_id}
+              type="traveller" // We are only dealing with the traveler type here
+              imageSrc={tour.photos[0]}
+              description={tour.description}
+              days={days} // Pass the calculated days
+              originalPrice={tour.price}
+              salePrice={tour.saleprice}
+              destination={tour.destination}
+              startLocation={tour.startlocation}
+              hasSale={tour.sale}
+              onBook={() => handleBookTour(tour.user_id)} // Handle booking for traveler
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ function AllReportsList({ all_reports, userId, rerender }) {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `http://localhost:3000/api/v1/reports/deleteReportForAdmin`,
+        `https://backendtripsync.vercel.app/api/v1/reports/deleteReportForAdmin`,
         {
           data: {
             traveller_id: traveller_id,
@@ -37,15 +37,18 @@ function AllReportsList({ all_reports, userId, rerender }) {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/api/v1/users/deleteUser`, {
-        data: {
-          user_id: agency_id,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
+      await axios.delete(
+        `https://backendtripsync.vercel.app/api/v1/users/deleteUser`,
+        {
+          data: {
+            user_id: agency_id,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
       rerender();
     } catch (err) {
       console.log(err);

@@ -1,4 +1,4 @@
-import {React,useState,useEffect} from "react";
+import { React, useState, useEffect } from "react";
 import axios from "axios";
 import "./AllAgenciesList.css";
 import { useNavigate } from "react-router-dom";
@@ -11,9 +11,9 @@ function AgencyCard({ image_url, id, prof_name, rerender }) {
   };
   const token = localStorage.getItem("token");
   const getNumberOfBlocks = async () => {
-    try{
+    try {
       const res = await axios.get(
-        `http://localhost:3000/api/v1/reports/getallreportsofAgency/${id}`,
+        `https://backendtripsync.vercel.app/api/v1/reports/getallreportsofAgency/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -21,17 +21,15 @@ function AgencyCard({ image_url, id, prof_name, rerender }) {
         }
       );
 
-
       setBlocks(res.data.data);
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
   };
-  
-  const onBlockUser = async() => {
+
+  const onBlockUser = async () => {
     await axios
-      .delete(`http://localhost:3000/api/v1/users/deleteUser`, {
+      .delete(`https://backendtripsync.vercel.app/api/v1/users/deleteUser`, {
         data: {
           user_id: id,
         },
@@ -52,14 +50,16 @@ function AgencyCard({ image_url, id, prof_name, rerender }) {
     getNumberOfBlocks();
   }, []);
 
-  
   return (
     <div className="agency-card-container">
       <div className="agency-card-info">
         <img src={image_url} alt={prof_name} className="agnecy-card-photo" />
         <div className="informatonAgency">
           <h3 className="agency-card-name">{prof_name}</h3>
-          <p className="agency-card-reports"> number of reports are: {blocks}</p>
+          <p className="agency-card-reports">
+            {" "}
+            number of reports are: {blocks}
+          </p>
         </div>
         <div className="agency-card-actions">
           <button

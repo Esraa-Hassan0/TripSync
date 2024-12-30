@@ -20,7 +20,7 @@ function CreateAdmin({ rerender, showPopUp }) {
   const createAdmin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/users/createUser",
+        "https://backendtripsync.vercel.app/api/v1/users/createUser",
         {
           user_name: formData.username,
           user_email: formData.email,

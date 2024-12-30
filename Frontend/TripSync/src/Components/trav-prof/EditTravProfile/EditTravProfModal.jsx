@@ -71,7 +71,7 @@ const EditTravProfModal = (props) => {
       const url = await handlesImage(formData.profilePicture);
 
       await axios.patch(
-        "http://localhost:3000/api/v1/users/updateMe",
+        "https://backendtripsync.vercel.app/api/v1/users/updateMe",
         {
           profilephoto: url,
           useremail: formData.email,
@@ -95,8 +95,6 @@ const EditTravProfModal = (props) => {
         profilename: formData.profile_name,
         profilephoto: url,
       });
-
-
     } catch (err) {
       console.log(err);
       props.showPopUp("please check for the enterd data", "fail");

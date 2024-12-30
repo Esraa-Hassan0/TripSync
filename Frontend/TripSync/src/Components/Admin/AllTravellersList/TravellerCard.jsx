@@ -9,9 +9,9 @@ function TravellerCard({ image_url, id, prof_name, rerender }) {
   const onViewProfile = () => {
     navigate(`/Traveller-Profile/${id}`);
   };
-  const deletrUser = async() => {
-   await axios
-      .delete(`http://localhost:3000/api/v1/users/deleteUser`, {
+  const deletrUser = async () => {
+    await axios
+      .delete(`https://backendtripsync.vercel.app/api/v1/users/deleteUser`, {
         data: {
           user_id: id,
         },
@@ -26,7 +26,6 @@ function TravellerCard({ image_url, id, prof_name, rerender }) {
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   const refreshPage = () => {

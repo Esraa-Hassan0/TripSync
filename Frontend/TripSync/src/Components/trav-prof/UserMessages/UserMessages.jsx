@@ -3,13 +3,7 @@ import "./UserMessages.css";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 
-const UserMessages = ({
-  isOpen,
-  onClose,
-  profileId,
-  isOwner,
-  currentUser,
-}) => {
+const UserMessages = ({ isOpen, onClose, profileId, isOwner, currentUser }) => {
   if (!isOpen) return null;
   let current_user_is_owner = isOwner;
 
@@ -20,17 +14,17 @@ const UserMessages = ({
   const [allChats, setAllCahts] = useState([]);
   const messUlRef = useRef(null);
 
-  const sendMessage=async()=>
-  {
+  const sendMessage = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `http://localhost:3000/api/v1/chats/sendMessage`,
-        { 
+        `https://backendtripsync.vercel.app/api/v1/chats/sendMessage`,
+        {
           sender_id: currentUser.user_id,
-          receiver_id: (!current_user_is_owner && currentUser !== null)
-          ? profileId
-          : selectedChat.senderId,
+          receiver_id:
+            !current_user_is_owner && currentUser !== null
+              ? profileId
+              : selectedChat.senderId,
           content: newMessage,
         },
         {
@@ -40,32 +34,28 @@ const UserMessages = ({
           withCredentials: true,
         }
       );
-
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-
-const reRender = () => {
-  get_user_messages();
+    } catch (error) {
+      console.log(error);
+    }
   };
-  
-    const scrollToLastElement = () => {
-      const ulElement = messUlRef.current;
-      if (ulElement) {
-        const lastChild = ulElement.lastChild; // Get the last child of the <ul>
-        if (lastChild) {
-          lastChild.scrollIntoView(); // Scroll to the last child
-        }
-      }
-    };
-  
 
-  
-  useEffect(() => { 
+  const reRender = () => {
+    get_user_messages();
+  };
+
+  const scrollToLastElement = () => {
+    const ulElement = messUlRef.current;
+    if (ulElement) {
+      const lastChild = ulElement.lastChild; // Get the last child of the <ul>
+      if (lastChild) {
+        lastChild.scrollIntoView(); // Scroll to the last child
+      }
+    }
+  };
+
+  useEffect(() => {
     scrollToLastElement();
-  },[selectedChatMessages])
+  }, [selectedChatMessages]);
 
   useEffect(() => {
     get_user_messages(); // Fetch messages
@@ -75,7 +65,7 @@ const reRender = () => {
       const chatNames = [];
       const chats = [];
       let id = 1;
-      for (let i = userMessages.length-1 ; i >= 0; i--) {
+      for (let i = userMessages.length - 1; i >= 0; i--) {
         let message_sender = userMessages[i].sender_name;
         let message_receiver = userMessages[i].receiver_name;
         if (
@@ -120,7 +110,7 @@ const reRender = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/chats/myChats`,
+        `https://backendtripsync.vercel.app/api/v1/chats/myChats`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -135,7 +125,6 @@ const reRender = () => {
       console.log(error);
     }
   };
-
 
   // send message to another user
   if (!current_user_is_owner && currentUser !== null) {
@@ -188,8 +177,6 @@ const reRender = () => {
   }
   //-----------------------------------------
 
-
-
   const handleChatClick = (chatId) => {
     const all = allChats.filter((chat) => chat.chatId == chatId);
     if (all.length > 0) {
@@ -200,38 +187,38 @@ const reRender = () => {
           message.sender_id == chat.senderId ||
           message.receiver_id == chat.senderId
       );
-      setSelectedChatMessages(messages); 
+      setSelectedChatMessages(messages);
 
       scrollToLastElement();
     }
   };
 
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-      if (newMessage.trim()) {
-        //   setMessages([...messages, { sender: "You", content: newMessage }]);
-        const currentDate = new Date();
-        // form new message
-        const message = {
-          id: null,
-          sender_id: currentUser.user_id,
-          receiver_id: selectedChat.senderId,
-          content: newMessage,
-          date: currentDate.toLocaleDateString(),
-          // time: `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`,
-          time: currentDate.toLocaleTimeString().slice(0,8),
-        };
-        selectedChatMessages.push(message);
-        setNewMessage("");
-        sendMessage();
-        get_user_messages();
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    if (newMessage.trim()) {
+      //   setMessages([...messages, { sender: "You", content: newMessage }]);
+      const currentDate = new Date();
+      // form new message
+      const message = {
+        id: null,
+        sender_id: currentUser.user_id,
+        receiver_id: selectedChat.senderId,
+        content: newMessage,
+        date: currentDate.toLocaleDateString(),
+        // time: `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`,
+        time: currentDate.toLocaleTimeString().slice(0, 8),
+      };
+      selectedChatMessages.push(message);
+      setNewMessage("");
+      sendMessage();
+      get_user_messages();
 
-        // console.log(selectedChat.chatId);
-        // handleChatClick(selectedChat.chatId);
-        
-        // console.log(message);
-      }
-    };
+      // console.log(selectedChat.chatId);
+      // handleChatClick(selectedChat.chatId);
+
+      // console.log(message);
+    }
+  };
 
   return (
     <div className="modal-overlay">
@@ -244,7 +231,7 @@ const reRender = () => {
           <div className="chats">
             <ul className="chats-list">
               {allChats.length > 0 &&
-                allChats.map((chat,idx) => (
+                allChats.map((chat, idx) => (
                   <li
                     className="chat-item"
                     key={idx}
@@ -276,7 +263,7 @@ const reRender = () => {
             <div className="chat-content">
               <ul className="message-list" ref={messUlRef}>
                 {selectedChatMessages.length > 0 &&
-                  selectedChatMessages.map((message,idx) => {
+                  selectedChatMessages.map((message, idx) => {
                     const sent = message.sender_id == profileId;
                     return (
                       <div

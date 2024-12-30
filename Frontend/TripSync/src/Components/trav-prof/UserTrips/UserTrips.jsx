@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import TripCard from "../TripsCard/TripsCard";
-import "./userTrips.css";
+import "./UserTrips.css";
 
 const UserTrips = ({ trips, userID }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -61,13 +61,14 @@ const TripDetailsPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/trips/getTripByID/${trip_id}`,
+        `https://backendtripsync.vercel.app/api/v1/trips/getTripByID/${trip_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      console.log(response.data[0]);
       setTripData(response.data[0]);
     } catch (error) {
       console.error(error);
@@ -78,7 +79,7 @@ const TripDetailsPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/trips/getAvailbleSeats/${trip_id}`,
+        `https://backendtripsync.vercel.app/api/v1/trips/getAvailbleSeats/${trip_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -96,7 +97,7 @@ const TripDetailsPage = () => {
     const token = localStorage.getItem("token");
     try {
       await axios.delete(
-        `http://localhost:3000/api/v1/rewards/deleteFromMyRewards/${id}`,
+        `https://backendtripsync.vercel.app/api/v1/rewards/deleteFromMyRewards/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,16 +122,18 @@ const TripDetailsPage = () => {
         return;
       }
 
-      let actualPrice = (sale==true) ? saleprice : price;
+      let actualPrice = sale == true ? saleprice : price;
       if (selectedFreeTrip.reward_id) {
         actualPrice = 0;
       } else if (selectedPromotion.reward_id) {
-        actualPrice =actualPrice -(actualPrice * selectedPromotion.promotionpercentage) / 100;
+        actualPrice =
+          actualPrice -
+          (actualPrice * selectedPromotion.promotionpercentage) / 100;
       }
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        `http://localhost:3000/api/v1/users/payForTrip/${trip_id}`,
+        `https://backendtripsync.vercel.app/api/v1/users/payForTrip/${trip_id}`,
         {
           Price: actualPrice * numberOfSeats,
           NumberOfSeats: numberOfSeats,
@@ -147,7 +150,6 @@ const TripDetailsPage = () => {
       } else if (selectedPromotion.reward_id) {
         await RedeemReward(selectedPromotion.reward_id);
       }
-
 
       // alert("Booking successful!");
       togglePoppUp("Trip Booked Successfully", "success");
@@ -169,7 +171,7 @@ const TripDetailsPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/rewards/myRewards`,
+        `https://backendtripsync.vercel.app/api/v1/rewards/myRewards`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

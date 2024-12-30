@@ -7,7 +7,7 @@ import BlogPost from "../../Components/Blog/Blog";
 import "./Blogs.css";
 import NavbarSignedIn from "../../Components/NavbarSignedIn/NavbarSignedIn";
 
-const BASE_URL = "http://localhost:3000/api/v1/blogs/AllBlogs";
+const BASE_URL = "https://backendtripsync.vercel.app/api/v1/blogs/AllBlogs";
 
 function Blogs() {
   const [showPopupFail, setShowPopupFail] = useState(false);
@@ -102,7 +102,6 @@ function Blogs() {
               style={{ color: "#0fc21b", fontSize: "2rem" }}
             ></i>
           </div>
-          
         </div>
       )}
     </>

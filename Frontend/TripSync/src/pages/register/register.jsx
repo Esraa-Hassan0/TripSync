@@ -4,7 +4,7 @@ import { UserContext } from "../../assets/userContext";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./Register.css";
+import "./register.css";
 
 function Register() {
   const [showPopupSuccess, setShowPopupSuccess] = useState(false);
@@ -119,7 +119,7 @@ function Register() {
         const photoUrl = await handlesImage(formData.profilePhoto);
 
         const response = await axios.post(
-          "http://localhost:3000/api/v1/users/SignUp",
+          "https://backendtripsync.vercel.app/api/v1/users/SignUp",
           {
             username: formData.userName,
             profileName: formData.profileName,

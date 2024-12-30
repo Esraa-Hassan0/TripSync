@@ -16,7 +16,6 @@ const TravelAgencyProfile = () => {
   const { id } = useParams();
   const { user, setUser } = useContext(UserContext);
 
-
   const [agency, setAgency] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -61,7 +60,7 @@ const TravelAgencyProfile = () => {
     const fetchAgencyData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/users/${id}`,
+          `https://backendtripsync.vercel.app/api/v1/users/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -117,20 +116,19 @@ const TravelAgencyProfile = () => {
 
       // Make the API call to update the user
       await axios.patch(
-        `http://localhost:3000/api/v1/users/updateMe`,
+        `https://backendtripsync.vercel.app/api/v1/users/updateMe`,
         {
-
-          profilephoto:profilePhotoUrl,
-          profilename:updateData.profilename,
-          previousPassword:updateData.previousPassword,
-          newPassword:updateData.newPassword,
-          useremail:updateData.useremail,
-          address:updateData.address,
-          location:updateData.location,
-          phoneNumber:updateData.phoneNumber,
-          country:updateData.country,
-          rate:updateData.rate,
-          email:updateData.email,
+          profilephoto: profilePhotoUrl,
+          profilename: updateData.profilename,
+          previousPassword: updateData.previousPassword,
+          newPassword: updateData.newPassword,
+          useremail: updateData.useremail,
+          address: updateData.address,
+          location: updateData.location,
+          phoneNumber: updateData.phoneNumber,
+          country: updateData.country,
+          rate: updateData.rate,
+          email: updateData.email,
         },
         {
           headers: {
@@ -138,8 +136,6 @@ const TravelAgencyProfile = () => {
           },
         }
       );
-
-
 
       const newemail = updateData.useremail ? updateData.useremail : user.email;
 
@@ -333,14 +329,12 @@ const TravelAgencyProfile = () => {
           </p>
 
           <p>
-
             <strong>
               <FaStar className="rate-icon" />
               Rate:
             </strong>
 
             {rate}
-
           </p>
 
           <p>

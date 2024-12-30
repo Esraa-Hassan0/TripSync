@@ -17,7 +17,7 @@ function BlogWrite() {
   const [error, setError] = useState("");
   const [isPosting, setIsPosting] = useState(false);
 
-  const Base_URL = "http://localhost:3000/api/v1/blogs/CreateBlog";
+  const Base_URL = "https://backendtripsync.vercel.app/api/v1/blogs/CreateBlog";
 
   const handlePhotoChange = (event) => {
     const selectedFile = event.target.files[0];

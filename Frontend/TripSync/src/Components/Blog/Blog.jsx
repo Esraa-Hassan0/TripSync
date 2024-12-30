@@ -17,7 +17,7 @@ const BlogPost = ({ blog }) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(
-        `http://localhost:3000/api/v1/blogs/DeleteBlog/${blog.id}`,
+        `https://backendtripsync.vercel.app/api/v1/blogs/DeleteBlog/${blog.id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

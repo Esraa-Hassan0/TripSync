@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import "./AllAdmins.css"
+import "./AllAdmins.css";
 import axios from "axios";
 
-function AdminCard({id, user_name, rerender }) {
+function AdminCard({ id, user_name, rerender }) {
   const token = localStorage.getItem("token");
-  const deletrUser = async() => {
-   await axios
-      .delete(`http://localhost:3000/api/v1/users/deleteUser`, {
+  const deletrUser = async () => {
+    await axios
+      .delete(`https://backendtripsync.vercel.app/api/v1/users/deleteUser`, {
         data: {
           user_id: id,
         },
@@ -21,7 +21,6 @@ function AdminCard({id, user_name, rerender }) {
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   const refreshPage = () => {

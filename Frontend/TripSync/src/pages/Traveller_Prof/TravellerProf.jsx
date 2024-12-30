@@ -38,7 +38,6 @@ function TravellerProf(props) {
 
   const { user } = useContext(UserContext);
 
-
   let id = null;
   if (user !== null) {
     id = user.user_id;
@@ -48,7 +47,7 @@ function TravellerProf(props) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:3000/api/v1/rewards/getRewardIcanGet",
+        "https://backendtripsync.vercel.app/api/v1/rewards/getRewardIcanGet",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -67,7 +66,7 @@ function TravellerProf(props) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/trips/getTrips/${profile_id}`,
+        `https://backendtripsync.vercel.app/api/v1/trips/getTrips/${profile_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -86,7 +85,7 @@ function TravellerProf(props) {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/users/myProfile/tickets/getAllTickets`,
+        `https://backendtripsync.vercel.app/api/v1/users/myProfile/tickets/getAllTickets`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -94,9 +93,8 @@ function TravellerProf(props) {
           withCredentials: true,
         }
       );
-  
-      set_all_user_tickets(response.data.data);
 
+      set_all_user_tickets(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +107,7 @@ function TravellerProf(props) {
       // const t = all_Travellers.filter((trav) => trav.userID == id)[0];
       // setTraveller(t);
       const response = await axios.get(
-        `http://localhost:3000/api/v1/users/${profile_id}`,
+        `https://backendtripsync.vercel.app/api/v1/users/${profile_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -130,7 +128,7 @@ function TravellerProf(props) {
       // const t = all_Travellers.filter((trav) => trav.userID == id)[0];
       // setTraveller(t);
       const response = await axios.get(
-        `http://localhost:3000/api/v1/rewards/myRewards`,
+        `https://backendtripsync.vercel.app/api/v1/rewards/myRewards`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -165,10 +163,9 @@ function TravellerProf(props) {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   const openModal = () => {
     setModalIsOpened(true);
@@ -202,8 +199,7 @@ function TravellerProf(props) {
     (user === null || traveller === null || traveller.role !== "traveller")
   ) {
     return <div className="user-not-found-message">User not founded</div>;
-  }  
-  else
+  } else
     return (
       <>
         <div className="Profile-container">

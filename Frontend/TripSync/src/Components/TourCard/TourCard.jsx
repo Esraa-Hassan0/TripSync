@@ -4,7 +4,7 @@ import "./TourCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 
-import { useContext,useEffect,useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { UserContext } from "../../assets/userContext";
 import axios from "axios";
@@ -26,34 +26,30 @@ const TourCard = ({
   id,
   end,
 }) => {
-
-
   const [availbleSeats, setAvailbleSeats] = useState(0);
   const { user } = useContext(UserContext);
-    const currentDate = new Date().toLocaleDateString();
+  const currentDate = new Date().toLocaleDateString();
 
-    const getAvailbleSeats = async () => {
-      try{
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/trips/getAvailbleSeats/${tripid}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
- 
-        setAvailbleSeats(response.data.data);
-      }
-      catch(error){
-        console.error(error);
-      }
-    };
-      useEffect(() => {;
-        getAvailbleSeats();
-      }, []);
+  const getAvailbleSeats = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `https://backendtripsync.vercel.app/api/v1/trips/getAvailbleSeats/${tripid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      setAvailbleSeats(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getAvailbleSeats();
+  }, []);
 
   return (
     <div className="tour-card">
@@ -74,23 +70,24 @@ const TourCard = ({
         <div className="details-row">
           <FontAwesomeIcon icon={faCalendar} />
           <span> No of Days: {days}</span>
-          
         </div>
         <div className="details-row">
           <FontAwesomeIcon icon={faCalendar} />
-          <span> Start Date:{" "}
-                      
-                      { new Date(end).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
-                          timeZoneName: "short",
-                        })}</span>
+          <span>
+            {" "}
+            Start Date:{" "}
+            {new Date(end).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              timeZoneName: "short",
+            })}
+          </span>
         </div>
-       
+
         <div className="price-row">
           {hasSale ? (
             <>
@@ -111,9 +108,9 @@ const TourCard = ({
                 Delete
               </button>
             </>
-
-           
-          ) :type==="traveller"&&availbleSeats&&new Date(end)>new Date()? (
+          ) : type === "traveller" &&
+            availbleSeats &&
+            new Date(end) > new Date() ? (
             <button className="action-button" onClick={onBook}>
               Book Now
             </button>
@@ -127,8 +124,7 @@ const TourCard = ({
 };
 
 TourCard.propTypes = {
-
-  key:PropTypes.Number,
+  key: PropTypes.Number,
 
   type: PropTypes.string,
   imageSrc: PropTypes.string,

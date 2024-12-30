@@ -20,7 +20,7 @@ const AddNewTour = () => {
     sale: false,
     saleprice: null,
     TravelAgency_ID: user.user_id,
-    Name:"",
+    Name: "",
   });
 
   const [imageFile, setImageFile] = useState(null); // For file input
@@ -36,7 +36,8 @@ const AddNewTour = () => {
 
   // Upload image to Cloudinary
   async function handleImageUpload(file) {
-    const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dxm7trzb5/image/upload";
+    const CLOUDINARY_URL =
+      "https://api.cloudinary.com/v1_1/dxm7trzb5/image/upload";
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "TripSync"); // Cloudinary upload preset
@@ -70,44 +71,45 @@ const AddNewTour = () => {
     }
   };
 
- // Form submission
-const handleFormSubmit = async (e) => {
-  e.preventDefault();
+  // Form submission
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-  const currentDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
+    const currentDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
 
-  // Validate that start date is greater than the current date
-  if (new Date(newTour.startDate) <= new Date(currentDate)) {
-    setErrorMessage("Start date must be later than the current date.");
-    return;
-  }
+    // Validate that start date is greater than the current date
+    if (new Date(newTour.startDate) <= new Date(currentDate)) {
+      setErrorMessage("Start date must be later than the current date.");
+      return;
+    }
 
-  // Validate that start date is less than end date
-  if (new Date(newTour.startDate) >= new Date(newTour.endDate)) {
-    setErrorMessage("Start date must be earlier than the end date.");
-    return;
-  }
+    // Validate that start date is less than end date
+    if (new Date(newTour.startDate) >= new Date(newTour.endDate)) {
+      setErrorMessage("Start date must be earlier than the end date.");
+      return;
+    }
 
-  try {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "https://backendtripsync.vercel.app/api/v1/users/myProfile/trips/addTrip",
+        newTour,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      "http://localhost:3000/api/v1/users/myProfile/trips/addTrip",
-      newTour,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    navigate(-1); // Navigate back after successful submission
-  } catch (error) {
-    console.error("Error adding tour:", error);
-    setErrorMessage("Failed to add the tour. Please check your input and try again.");
-  }
-};
+      navigate(-1); // Navigate back after successful submission
+    } catch (error) {
+      console.error("Error adding tour:", error);
+      setErrorMessage(
+        "Failed to add the tour. Please check your input and try again."
+      );
+    }
+  };
 
   return (
     <div className="add-new-tour-container">

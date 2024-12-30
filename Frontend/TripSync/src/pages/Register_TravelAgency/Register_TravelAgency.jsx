@@ -39,7 +39,6 @@ function Register_TravelAgency() {
 
   const navigate = useNavigate();
 
-
   const togglePopupSuccess = () => {
     setShowPopupSuccess(!showPopupSuccess); // Toggle the popup visibility
   };
@@ -162,7 +161,7 @@ function Register_TravelAgency() {
         const photoUrl = await handlesImage(formData.profilePhoto);
 
         const response = await axios.post(
-          "http://localhost:3000/api/v1/users/SignUp",
+          "https://backendtripsync.vercel.app/api/v1/users/SignUp",
           {
             username: formData.userName,
             profileName: formData.profileName,
@@ -403,7 +402,6 @@ function Register_TravelAgency() {
               Log in
             </a>
           </div>
-       
 
           {showPopupSuccess && (
             <div className="popup-overlay">

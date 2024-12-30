@@ -16,7 +16,7 @@ function AllAgencies() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
-  const Base_URL = `http://localhost:3000/api/v1/users/getAllTravelAgencies`;
+  const Base_URL = `https://backendtripsync.vercel.app/api/v1/users/getAllTravelAgencies`;
 
   // Fetch data from the database
   const fetchAgency = async () => {
@@ -53,7 +53,6 @@ function AllAgencies() {
 
   // Navigate to the tours page for a specific agency
 
-
   return (
     <>
       <NavbarSignedIn />
@@ -88,7 +87,6 @@ function AllAgencies() {
           )}
         </div>
       )}
-
     </>
   );
 }

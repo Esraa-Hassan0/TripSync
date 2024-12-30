@@ -26,7 +26,7 @@ const OurStory = () => {
 
       const token = localStorage.getItem("token");
       const response = await axios.get(
-        `http://localhost:3000/api/v1/users/${user_id}`,
+        `https://backendtripsync.vercel.app/api/v1/users/${user_id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ const OurStory = () => {
       const userData = response.data.data[0];
       setDescription(userData.description);
       setName(userData.username);
-      setProfilePhoto(userData.profilephoto ); // Use default if no profile photo
+      setProfilePhoto(userData.profilephoto); // Use default if no profile photo
     } catch (error) {
       console.error("Error fetching travel agency data:", error);
     } finally {
@@ -57,7 +57,7 @@ const OurStory = () => {
       setLoading(true);
 
       const response = await axios.patch(
-        `http://localhost:3000/api/v1/users/updateMe`,
+        `https://backendtripsync.vercel.app/api/v1/users/updateMe`,
         { description: updatedData.description, name: updatedData.name },
         {
           headers: {
@@ -65,8 +65,6 @@ const OurStory = () => {
           },
         }
       );
-
-
 
       setIsEditing(false);
     } catch (error) {
@@ -87,14 +85,20 @@ const OurStory = () => {
 
       <div className="about-us">
         <div className="profile-container1">
-        <img
-  src={profilePhoto.startsWith("http") ? profilePhoto : `http://localhost:3000/uploads/${profilePhoto}`}
-  alt="Profile"
-  className="profile-photo"
-/>
+          <img
+            src={
+              profilePhoto.startsWith("http")
+                ? profilePhoto
+                : `https://backendtripsync.vercel.app/uploads/${profilePhoto}`
+            }
+            alt="Profile"
+            className="profile-photo"
+          />
 
           <h1 className="header-title">
-            {isEditing && user.role === "travel_agency" && Number(user_id) === user.user_id ? (
+            {isEditing &&
+            user.role === "travel_agency" &&
+            Number(user_id) === user.user_id ? (
               <input
                 type="text"
                 className="edit-input"
@@ -108,7 +112,9 @@ const OurStory = () => {
         </div>
         <div className="header-underline"></div>
         <div className="description">
-          {isEditing && user.role === "travel_agency" && Number(user_id) === user.user_id ? (
+          {isEditing &&
+          user.role === "travel_agency" &&
+          Number(user_id) === user.user_id ? (
             <textarea
               className="edit-textarea"
               value={description}

@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import Sub_Navbar from "../../Components/Sub_Navbar/Sub_Navbar";
-import "./Sign_in.css";
+import "./sign_in.css";
 import axios from "axios";
 import { useNavigate, NavLink } from "react-router-dom";
 import { UserContext } from "../../assets/userContext";
@@ -28,7 +28,7 @@ function Sign_in() {
     setError("");
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/users/LogIn",
+        "https://backendtripsync.vercel.app/api/v1/users/LogIn",
         {
           email,
           password,
